@@ -1,15 +1,9 @@
 ﻿using _4Teammate.API.Models;
 using _4Teammate.API.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace _4Teammate.API.Controllers
-{
-    [Route("api/[controller]")]
+namespace _4Teammate.API.Controllers {
+  [Route("[controller]")]
     [ApiController]
     public class SportTypeController : ControllerBase
     {

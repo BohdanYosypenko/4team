@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace _4Teammate.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SportCategoryController : ControllerBase
     {

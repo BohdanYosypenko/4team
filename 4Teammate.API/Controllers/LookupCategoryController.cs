@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _4Teammate.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class LookupCategoryController : ControllerBase
     {
