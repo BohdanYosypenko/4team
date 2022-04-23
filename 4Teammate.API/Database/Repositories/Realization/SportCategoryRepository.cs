@@ -15,29 +15,29 @@ namespace _4Teammate.API.Database.Repositories.Realization
 
         public List<SportCategoryEntity> GetAll()
         {
-            return _context.Categories.ToList();
+            return _context.SportCategories.ToList();
         }
 
         public SportCategoryEntity GetById(int id)
         {
-            return _context.Categories
+            return _context.SportCategories
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
         }
 
         public SportCategoryEntity Create(SportCategoryEntity entity)
         {
-            return _context.Categories.Add(entity).Entity;
+            return _context.SportCategories.Add(entity).Entity;
         }
 
         public SportCategoryEntity Update(SportCategoryEntity entity)
         {
-            return _context.Categories.Update(entity).Entity;
+            return _context.SportCategories.Update(entity).Entity;
         }
 
         public void Delete(SportCategoryEntity entity)
         {
-            _context.Categories.Remove(entity);
+            _context.SportCategories.Remove(entity);
         }
     }
 }

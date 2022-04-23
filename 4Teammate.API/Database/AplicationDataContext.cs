@@ -1,16 +1,17 @@
 ﻿using _4Teammate.API.Database.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace _4Teammate.API.Database
 {
-    public class AplicationDataContext : DbContext
+    public class AplicationDataContext : IdentityDbContext<User>
     {
         public AplicationDataContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        public DbSet<SportCategoryEntity> Categories { get; set; }
+        public DbSet<SportCategoryEntity> SportCategories { get; set; }
         public DbSet<LookupCategoryEntity> LookupCategories { get; set; }
         public DbSet<SportLookupEntity> SportLookups { get; set; }
         public DbSet<SportTypeEntity> SportTypes { get; set; }

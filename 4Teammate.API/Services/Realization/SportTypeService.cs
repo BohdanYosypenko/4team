@@ -4,6 +4,7 @@ using _4Teammate.API.Models;
 using _4Teammate.API.Services.Interfaces;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _4Teammate.API.Services.Realization
 {
@@ -27,6 +28,11 @@ namespace _4Teammate.API.Services.Realization
         public SportType GetById(int id)
         {
             return _mapper.Map<SportType>(_unitOfWork.SportType.GetById(id));
+        }
+
+        public List<SportType> GetByCategoryId(int categoryId)
+        {
+            return _mapper.Map<List<SportType>>(_unitOfWork.SportType.GetAll().Where(c => c.CategoryFID == categoryId));
         }
 
         public SportType Create(SportType entity)

@@ -25,6 +25,12 @@ namespace _4Teammate.API.Controllers {
             return Ok(_sportTypeService.GetById(id));
         }
 
+        [HttpGet("category/{id}")]
+        public IActionResult GetByCategoryId([FromRoute] int id)
+        {
+            return Ok(_sportTypeService.GetByCategoryId(id));
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] SportType sportType)
         {
