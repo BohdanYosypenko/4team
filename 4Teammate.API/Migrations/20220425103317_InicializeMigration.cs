@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace _4Teammate.API.Migrations
 {
-    public partial class InitializeMigration : Migration
+    public partial class InicializeMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,20 +52,6 @@ namespace _4Teammate.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LookupCategories",
                 columns: table => new
                 {
@@ -77,6 +63,20 @@ namespace _4Teammate.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LookupCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SportCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SportCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,9 +200,9 @@ namespace _4Teammate.API.Migrations
                 {
                     table.PrimaryKey("PK_SportTypes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SportTypes_Categories_SportCategoryId",
+                        name: "FK_SportTypes_SportCategories_SportCategoryId",
                         column: x => x.SportCategoryId,
-                        principalTable: "Categories",
+                        principalTable: "SportCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -332,7 +332,7 @@ namespace _4Teammate.API.Migrations
                 name: "SportTypes");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "SportCategories");
         }
     }
 }

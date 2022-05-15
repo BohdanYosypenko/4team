@@ -183,7 +183,7 @@ namespace _4Teammate.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("SportCategories");
                 });
 
             modelBuilder.Entity("_4Teammate.API.Database.Entities.SportLookupEntity", b =>

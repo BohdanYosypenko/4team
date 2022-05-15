@@ -29,7 +29,7 @@ namespace _4Teammate.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
-            var user = await _userManager.FindByNameAsync(loginDTO.UserName);
+            var user = await _userManager.FindByNameAsync(loginDTO.Username);
 
             if (user == null)
             {
@@ -53,14 +53,14 @@ namespace _4Teammate.API.Controllers
                 return BadRequest("Email taken");
             }
 
-            if (await _userManager.Users.AnyAsync(u => u.UserName == registerDTO.Name))
+            if (await _userManager.Users.AnyAsync(u => u.UserName == registerDTO.Username))
             {
                 return BadRequest("Name taken");
             }
 
             var user = new User()
             {
-                UserName = registerDTO.Name,
+                UserName = registerDTO.Username,
                 Email = registerDTO.Email,
             };
 
@@ -86,7 +86,7 @@ namespace _4Teammate.API.Controllers
         {
             return new UserDTO()
             {
-                Name = user.UserName,
+                Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };
         }

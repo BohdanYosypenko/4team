@@ -5,7 +5,7 @@ namespace _4Teammate.API.DTO.AccountDTO
     public class RegisterDTO
     {
         [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
 
         [Required]
         [EmailAddress]

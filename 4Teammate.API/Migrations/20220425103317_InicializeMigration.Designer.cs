@@ -10,8 +10,8 @@ using _4Teammate.API.Database;
 namespace _4Teammate.API.Migrations
 {
     [DbContext(typeof(AplicationDataContext))]
-    [Migration("20220326132422_InitializeMigration")]
-    partial class InitializeMigration
+    [Migration("20220425103317_InicializeMigration")]
+    partial class InicializeMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -185,7 +185,7 @@ namespace _4Teammate.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("SportCategories");
                 });
 
             modelBuilder.Entity("_4Teammate.API.Database.Entities.SportLookupEntity", b =>
