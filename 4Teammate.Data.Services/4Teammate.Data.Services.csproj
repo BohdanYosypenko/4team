@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>_4Teammate.Data.Services</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\4Teammate.Data.Repositories\4Teammate.Data.Repositories.csproj" />
+    <ProjectReference Include="..\4Teammate.Domain.Interfaces\4Teammate.Domain.Interfaces.csproj" />
+    <ProjectReference Include="..\4Teammate.Domain.Models\4Teammate.Domain.Models.csproj" />
+  </ItemGroup>
+
+</Project>

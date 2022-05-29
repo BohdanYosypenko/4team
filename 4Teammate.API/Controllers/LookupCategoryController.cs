@@ -1,48 +1,47 @@
-﻿using _4Teammate.API.Models;
-using _4Teammate.API.Services.Interfaces;
+﻿using _4Teammate.Domain.Models;
+using _4Teammate.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace _4Teammate.API.Controllers
+namespace _4Teammate.API.Controllers;
+
+[Route("[controller]")]
+[ApiController]
+public class LookupCategoryController : ControllerBase
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class LookupCategoryController : ControllerBase
+    private readonly ILookupCategoryService _lookupCategoryService;
+    public LookupCategoryController(ILookupCategoryService lookupCategoryService)
     {
-        private readonly ILookupCategoryService _lookupCategoryService;
-        public LookupCategoryController(ILookupCategoryService lookupCategoryService)
-        {
-            _lookupCategoryService = lookupCategoryService;
-        }
+        _lookupCategoryService = lookupCategoryService;
+    }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok(_lookupCategoryService.GetAll());
-        }
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        return Ok(_lookupCategoryService.GetAll());
+    }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
-        {
-            return Ok(_lookupCategoryService.GetById(id));
-        }
+    [HttpGet("{id}")]
+    public IActionResult GetById([FromRoute] int id)
+    {
+        return Ok(_lookupCategoryService.GetById(id));
+    }
 
-        [HttpPost]
-        public IActionResult Create([FromBody] LookupCategory lookupCategory)
-        {
-            return Ok(_lookupCategoryService.Create(lookupCategory));
-        }
+    [HttpPost]
+    public IActionResult Create([FromBody] LookupCategory lookupCategory)
+    {
+        return Ok(_lookupCategoryService.Create(lookupCategory));
+    }
 
-        [HttpPut]
-        public IActionResult Update([FromBody] LookupCategory lookupCategory)
-        {
-            return Ok(_lookupCategoryService.Update(lookupCategory));
-        }
+    [HttpPut]
+    public IActionResult Update([FromBody] LookupCategory lookupCategory)
+    {
+        return Ok(_lookupCategoryService.Update(lookupCategory));
+    }
 
-        [HttpDelete]
-        public IActionResult Delete([FromBody] LookupCategory lookupCategory)
-        {
-            _lookupCategoryService.Delete(lookupCategory);
-            return Ok();
-        }
+    [HttpDelete]
+    public IActionResult Delete([FromBody] LookupCategory lookupCategory)
+    {
+        _lookupCategoryService.Delete(lookupCategory);
+        return Ok();
     }
 }

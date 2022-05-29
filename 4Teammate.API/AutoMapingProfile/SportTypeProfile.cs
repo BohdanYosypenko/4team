@@ -1,15 +1,14 @@
-﻿using _4Teammate.API.Database.Entities;
-using _4Teammate.API.Models;
+﻿using _4Teammate.Data.Entities;
+using _4Teammate.Domain.Models;
 using AutoMapper;
 
-namespace _4Teammate.API.AutoMapingProfile
+namespace _4Teammate.API.AutoMapingProfile;
+
+public class SportTypeProfile : Profile
 {
-    public class SportTypeProfile : Profile
+    public SportTypeProfile()
     {
-        public SportTypeProfile()
-        {
-            CreateMap<SportTypeEntity, SportType>();
-            CreateMap<SportType, SportTypeEntity>();
-        }
+        CreateMap<SportTypeEntity, SportType>();
+        CreateMap<SportType, SportTypeEntity>();
     }
 }
