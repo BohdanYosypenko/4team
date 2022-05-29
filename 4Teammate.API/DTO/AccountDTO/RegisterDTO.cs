@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace _4Teammate.API.DTO.AccountDTO
+namespace _4Teammate.API.DTO.AccountDTO;
+
+public class RegisterDTO
 {
-    public class RegisterDTO
-    {
-        [Required]
-        public string Username { get; set; }
+    [Required]
+    public string Username { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
 
-        [Required]
-        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must Be complex")]
-        public string Password { get; set; }
-    }
+    [Required]
+    [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must Be complex")]
+    public string Password { get; set; }
 }
