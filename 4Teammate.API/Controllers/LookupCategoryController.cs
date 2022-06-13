@@ -17,19 +17,19 @@ public class LookupCategoryController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(_lookupCategoryService.GetAll());
+        return Ok(_lookupCategoryService.GetAllAsync());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById([FromRoute] int id)
     {
-        return Ok(_lookupCategoryService.GetById(id));
+        return Ok(_lookupCategoryService.GetByIdAsync(id));
     }
 
     [HttpPost]
     public IActionResult Create([FromBody] LookupCategory lookupCategory)
     {
-        return Ok(_lookupCategoryService.Create(lookupCategory));
+        return Ok(_lookupCategoryService.CreateAsync(lookupCategory));
     }
 
     [HttpPut]

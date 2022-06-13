@@ -24,4 +24,8 @@
     <ProjectReference Include="..\4Teammate.Domain.Models\4Teammate.Domain.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\" />
+  </ItemGroup>
+
 </Project>

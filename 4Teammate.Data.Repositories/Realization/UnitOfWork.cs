@@ -5,28 +5,46 @@ namespace _4Teammate.Data.Repositories.Realization;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly AplicationDataContext _context;
+  private readonly AplicationDataContext _context;
+  private ILookupCategoryRepository _lookupCategoryRepository;
+  private ISportTypeRepository _sportTypeRepository;
+  private ISportCategoryRepository _sportCategoryRepository;
+  private ISportLookupRepository _sportLookupRepository;
+  private ITeammateUserRepository _userRepository;
 
-    public ILookupCategoryRepository LookupCategory { get; set; }
-    public ISportCategoryRepository SportCategory { get; set; }
-    public ISportLookupRepository SportLookup { get; set; }
-    public ISportTypeRepository SportType { get; set; }
-    public UnitOfWork(AplicationDataContext context,
-            ILookupCategoryRepository lookupCategory,
-            ISportCategoryRepository sportCategory,
-            ISportLookupRepository sportLookup,
-            ISportTypeRepository sportType)
-    {
-        _context = context;
-        LookupCategory = lookupCategory;
-        SportCategory = sportCategory;
-        SportLookup = sportLookup;
-        SportType = sportType;
-    }
+  public UnitOfWork(AplicationDataContext context)
+  {
+    _context = context;
+  }
 
-    public void SaveAsync()
-    {
-        _context.SaveChanges();
-    }
+  public ILookupCategoryRepository LookupCategory
+  {
+    get { return _lookupCategoryRepository ??= new LookupCategoryRepository(_context); }
+  }
+
+  public ISportCategoryRepository SportCategory
+  {
+    get { return _sportCategoryRepository ??= new SportCategoryRepository(_context); }
+  }
+
+  public ISportLookupRepository SportLookup
+  {
+    get { return _sportLookupRepository ??= new SportLookupRepository(_context); }
+  }
+
+  public ISportTypeRepository SportType
+  {
+    get { return _sportTypeRepository ??= new SportTypeRepository(_context); }
+  }
+
+  public ITeammateUserRepository TeammateUser
+  {
+    get { return _userRepository ??= new TeammateUserRepository(_context); }
+  }
+
+  public void SaveAsync()
+  {
+    _context.SaveChanges();
+  }
 }
 
