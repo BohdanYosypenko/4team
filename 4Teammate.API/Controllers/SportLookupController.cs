@@ -8,40 +8,40 @@ namespace _4Teammate.API.Controllers;
 [ApiController]
 public class SportLookupController : ControllerBase
 {
-    private readonly ISportLookupService _sportLookupService;
-    public SportLookupController(ISportLookupService sportLookupService)
-    {
-        _sportLookupService = sportLookupService;
-    }
+  private readonly ISportLookupService _sportLookupService;
+  public SportLookupController(ISportLookupService sportLookupService)
+  {
+    _sportLookupService = sportLookupService;
+  }
 
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        return Ok(_sportLookupService.GetAll());
-    }
+  [HttpGet]
+  public IActionResult GetAll()
+  {
+    return Ok(_sportLookupService.GetAllAsync());
+  }
 
-    [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
-    {
-        return Ok(_sportLookupService.GetById(id));
-    }
+  [HttpGet("{id}")]
+  public IActionResult GetById([FromRoute] int id)
+  {
+    return Ok(_sportLookupService.GetByIdAsync(id));
+  }
 
-    [HttpPost]
-    public IActionResult Create([FromBody] SportLookup sportLookup)
-    {
-        return Ok(_sportLookupService.Create(sportLookup));
-    }
+  [HttpPost]
+  public IActionResult Create([FromBody] SportLookup sportLookup)
+  {
+    return Ok(_sportLookupService.CreateAsync(sportLookup));
+  }
 
-    [HttpPut]
-    public IActionResult Update([FromBody] SportLookup sportLookup)
-    {
-        return Ok(_sportLookupService.Update(sportLookup));
-    }
+  [HttpPut]
+  public IActionResult Update([FromBody] SportLookup sportLookup)
+  {
+    return Ok(_sportLookupService.Update(sportLookup));
+  }
 
-    [HttpDelete]
-    public IActionResult Delete([FromBody] SportLookup sportLookup)
-    {
-        _sportLookupService.Delete(sportLookup);
-        return Ok();
-    }
+  [HttpDelete]
+  public IActionResult Delete([FromBody] SportLookup sportLookup)
+  {
+    _sportLookupService.Delete(sportLookup);
+    return Ok();
+  }
 }

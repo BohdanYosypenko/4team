@@ -1,11 +1,20 @@
-﻿namespace _4Teammate.Data.Repositories.Interfaces;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
 
-public interface IBaseRepository<T>
+namespace _4Teammate.Data.Repositories.Interfaces;
+
+public interface IBaseRepository<Entity>
 {
-    public List<T> GetAll();
-    public T GetById(int id);
-    public T Create(T entity);
-    public T Update(T entity);
-    public void Delete(T entity);
+  public Task<List<Entity>> GetAllAsync(Expression<Func<Entity, bool>> filter = null,
+          Func<IQueryable<Entity>, IIncludableQueryable<Entity, object>> include = null,
+          Func<IQueryable<Entity>, IOrderedQueryable<Entity>> orderBy = null,
+          int? pageNumber = null, int? pageSize = null,
+          bool asNoTracking = false);
+  public Task<Entity> GetByIdAsync(Expression<Func<Entity, bool>> filter = null,
+          Func<IQueryable<Entity>, IIncludableQueryable<Entity, object>> include = null,
+          bool asNoTracking = false);
+  public Task<Entity> CreateAsync(Entity entity);
+  public Entity Update(Entity entity);
+  public void Delete(Entity entity);
 }
 

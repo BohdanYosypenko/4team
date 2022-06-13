@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace _4Teammate.Data.Context.Migrations
 {
-    public partial class InicializeMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,11 +28,8 @@ namespace _4Teammate.Data.Context.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecondName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,8 +56,8 @@ namespace _4Teammate.Data.Context.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,8 +70,8 @@ namespace _4Teammate.Data.Context.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,15 +185,39 @@ namespace _4Teammate.Data.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TeammateUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountFID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecondName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeammateUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeammateUsers_AspNetUsers_AccountFID",
+                        column: x => x.AccountFID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SportTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryFID = table.Column<int>(type: "int", nullable: false),
-                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SportCategoryId = table.Column<int>(type: "int", nullable: true)
+                    DefaultName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SportCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,7 +227,34 @@ namespace _4Teammate.Data.Context.Migrations
                         column: x => x.SportCategoryId,
                         principalTable: "SportCategories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderFID = table.Column<int>(type: "int", nullable: false),
+                    RecipientFID = table.Column<int>(type: "int", nullable: false),
+                    MessageText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkedMessageFID = table.Column<int>(type: "int", nullable: false),
+                    SendTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_TeammateUsers_RecipientFID",
+                        column: x => x.RecipientFID,
+                        principalTable: "TeammateUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Messages_TeammateUsers_SenderFID",
+                        column: x => x.SenderFID,
+                        principalTable: "TeammateUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -224,8 +274,9 @@ namespace _4Teammate.Data.Context.Migrations
                     AgeStart = table.Column<int>(type: "int", nullable: false),
                     AgeEnd = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                    SportTypeId = table.Column<int>(type: "int", nullable: true),
-                    LookupCategoryId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    SportTypeId = table.Column<int>(type: "int", nullable: false),
+                    LookupCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -235,13 +286,19 @@ namespace _4Teammate.Data.Context.Migrations
                         column: x => x.LookupCategoryId,
                         principalTable: "LookupCategories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SportLookups_SportTypes_SportTypeId",
                         column: x => x.SportTypeId,
                         principalTable: "SportTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SportLookups_TeammateUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "TeammateUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -284,6 +341,16 @@ namespace _4Teammate.Data.Context.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_RecipientFID",
+                table: "Messages",
+                column: "RecipientFID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderFID",
+                table: "Messages",
+                column: "SenderFID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SportLookups_LookupCategoryId",
                 table: "SportLookups",
                 column: "LookupCategoryId");
@@ -294,9 +361,20 @@ namespace _4Teammate.Data.Context.Migrations
                 column: "SportTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SportLookups_UserId",
+                table: "SportLookups",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SportTypes_SportCategoryId",
                 table: "SportTypes",
                 column: "SportCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeammateUsers_AccountFID",
+                table: "TeammateUsers",
+                column: "AccountFID",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -317,13 +395,13 @@ namespace _4Teammate.Data.Context.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "SportLookups");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "LookupCategories");
@@ -332,7 +410,13 @@ namespace _4Teammate.Data.Context.Migrations
                 name: "SportTypes");
 
             migrationBuilder.DropTable(
+                name: "TeammateUsers");
+
+            migrationBuilder.DropTable(
                 name: "SportCategories");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

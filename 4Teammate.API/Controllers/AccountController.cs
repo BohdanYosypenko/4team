@@ -1,12 +1,10 @@
-﻿using _4Teammate.API.DTO.AccountDTO;
+﻿using System.Threading.Tasks;
 using _4Teammate.Data.Entities;
-using _4Teammate.Data.Services.Realization;
+using _4Teammate.Domain.Models.Account;
+using _4Teammate.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace _4Teammate.API.Controllers;
 
@@ -15,79 +13,40 @@ namespace _4Teammate.API.Controllers;
 [ApiController]
 public class AccountController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly TokenService _tokenService;
 
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _tokenService = tokenService;
-    }
+  private readonly IAccountService _accountService;
 
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginDTO loginDTO)
-    {
-        var user = await _userManager.FindByNameAsync(loginDTO.Username);
+  public AccountController(IAccountService accountService)
+  {
+    _accountService = accountService;
+  }
 
-        if (user == null)
-        {
-            return Unauthorized();
-        }
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
+  [HttpPost("login")]
+  public async Task<IActionResult> Login(LoginModel loginModel)
+  {
+    var result = await _accountService.LoginAsync(loginModel);
+    return result is null ? BadRequest() : Ok(result);
+  }
 
-        if (result.Succeeded)
-        {
-            return Ok(CreateUserObject(user));
-        }
+  [HttpPost("register")]
+  public async Task<IActionResult> Register(RegisterModel registerModel)
+  {
+    var result = await _accountService.RegisterAsync(registerModel);
+    return result is null ? BadRequest() : Ok(result);
+  }
 
-        return Unauthorized("No password");
-    }
+  [Authorize]
+  [HttpPost("revoke/{username}")]
+  public async Task<IActionResult> GetCurrentUser([FromHeader] string username)
+  {
+    await _accountService.LogoutAsync(username);
+    return Ok();
+  }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterDTO registerDTO)
-    {
-        if (await _userManager.Users.AnyAsync(u => u.Email == registerDTO.Email))
-        {
-            return BadRequest("Email taken");
-        }
-
-        if (await _userManager.Users.AnyAsync(u => u.UserName == registerDTO.Username))
-        {
-            return BadRequest("Name taken");
-        }
-
-        var user = new User()
-        {
-            UserName = registerDTO.Username,
-            Email = registerDTO.Email,
-        };
-
-        var result = await _userManager.CreateAsync(user, registerDTO.Password);
-
-        if (result.Succeeded)
-        {
-            return Ok(CreateUserObject(user));
-        }
-
-        return BadRequest("Something goes wrong");
-    }
-
-    [Authorize]
-    [HttpGet]
-    public async Task<IActionResult> GetCurrentUser()
-    {
-        var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-        return Ok(CreateUserObject(user));
-    }
-
-    private UserDTO CreateUserObject(User user)
-    {
-        return new UserDTO()
-        {
-            Username = user.UserName,
-            Token = _tokenService.CreateToken(user)
-        };
-    }
+  [HttpPost("refresh-token")]  
+  public async Task<IActionResult> RefreshToken([FromBody] TokenModel tokenModel)
+  {
+    var result = await _accountService.RefreshTokenAsync(tokenModel);
+    return result is null ? BadRequest() : Ok(result);
+  }
 }

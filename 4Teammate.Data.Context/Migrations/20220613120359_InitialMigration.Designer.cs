@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _4Teammate.Data.Context;
 
@@ -11,9 +12,10 @@ using _4Teammate.Data.Context;
 namespace _4Teammate.Data.Context.Migrations
 {
     [DbContext(typeof(AplicationDataContext))]
-    partial class AplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220613120359_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
